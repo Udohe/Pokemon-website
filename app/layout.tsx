@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import '../styles/globals.css'
-import { AuthProvider } from '@/lib/auth';
 import Navbar from '@/components/layout/Navbar';
 
 export const metadata: Metadata = {
@@ -25,10 +24,8 @@ export default function RootLayout({
       </head>
 
       <body style={{ background: '#0f0f1e', color: '#fff' }}>
-        <AuthProvider>
             <Navbar />
             <main>{children}</main>
-        </AuthProvider>
       </body>
     </html>
   );
