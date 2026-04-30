@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import '../styles/globals.css'
 import { AuthProvider } from '@/lib/auth';
-import { FavoritesProvider } from '@/lib/favorites';
 import Navbar from '@/components/layout/Navbar';
 
 export const metadata: Metadata = {
@@ -27,10 +26,8 @@ export default function RootLayout({
 
       <body style={{ background: '#0f0f1e', color: '#fff' }}>
         <AuthProvider>
-          <FavoritesProvider>
             <Navbar />
             <main>{children}</main>
-          </FavoritesProvider>
         </AuthProvider>
       </body>
     </html>

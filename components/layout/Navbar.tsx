@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/lib/auth';
-import { useFavorites } from '@/lib/favorites';
 
 const NAV_LINKS = [
   { href: '/', label: 'Pokédex' },
