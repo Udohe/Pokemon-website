@@ -3,45 +3,42 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
 type FavoritesContextType = {
-  favorites: Set<number>;
+  favorites: number[];
   toggleFavorite: (id: number) => void;
   isFavorite: (id: number) => boolean;
 };
 
-const FavoritesContext = createContext<FavoritesContextType | null>(null);
+const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
 const STORAGE_KEY = 'pokedex_favorites';
 
 export function FavoritesProvider({ children }: { children: React.ReactNode }) {
-  const [favorites, setFavorites] = useState<Set<number>>(new Set());
+  const [favorites, setFavorites] = useState<number[]>([]);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        setFavorites(new Set(JSON.parse(stored)));
-      }
-    } catch {}
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      setFavorites(JSON.parse(stored));
+    }
   }, []);
 
   const toggleFavorite = (id: number) => {
     setFavorites(prev => {
-      const next = new Set(prev);
+      let updated;
 
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (prev.includes(id)) {
+        updated = prev.filter(item => item !== id);
+      } else {
+        updated = [...prev, id];
+      }
 
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(Array.from(next))
-      );
-
-      return next;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      return updated;
     });
   };
 
   const isFavorite = (id: number) => {
-    return favorites.has(id);
+    return favorites.includes(id);
   };
 
   return (
