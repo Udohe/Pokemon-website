@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import './globals.css';
+import '../styles/globals.css'
 import { AuthProvider } from '@/lib/auth';
 import { FavoritesProvider } from '@/lib/favorites';
 import Navbar from '@/components/layout/Navbar';
