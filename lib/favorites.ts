@@ -2,11 +2,11 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 
-interface FavoritesContextType {
+type FavoritesContextType = {
   favorites: Set<number>;
   toggleFavorite: (id: number) => void;
   isFavorite: (id: number) => boolean;
-}
+};
 
 const FavoritesContext = createContext<FavoritesContextType | null>(null);
 
@@ -18,7 +18,9 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) setFavorites(new Set(JSON.parse(stored)));
+      if (stored) {
+        setFavorites(new Set(JSON.parse(stored)));
+      }
     } catch {}
   }, []);
 
@@ -29,7 +31,10 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
       if (next.has(id)) next.delete(id);
       else next.add(id);
 
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(next)));
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(Array.from(next))
+      );
 
       return next;
     });
