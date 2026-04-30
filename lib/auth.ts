@@ -1,3 +1,7 @@
+'use client';
+
+import { createContext, useContext, useState, ReactNode } from 'react';
+
 export interface User {
   id: string;
   username: string;
@@ -6,20 +10,38 @@ export interface User {
   provider?: 'credentials' | 'google' | 'github';
 }
 
-export interface AuthState {
+interface AuthContextType {
   user: User | null;
-  isLoading: boolean;
-  error: string | null;
+  login: (user: User) => void;
+  logout: () => void;
 }
 
-export interface LoginFormData {
-  email: string;
-  password: string;
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+
+  const login = (userData: User) => {
+    setUser(userData);
+  };
+
+  const logout = () => {
+    setUser(null);
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
-export interface SignupFormData {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
+export function useAuth() {
+  const ctx = useContext(AuthContext);
+
+  if (!ctx) {
+    throw new Error('useAuth must be used inside AuthProvider');
+  }
+
+  return ctx;
 }
